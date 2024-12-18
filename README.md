@@ -1,6 +1,8 @@
 # ExamenPS
-Examen de Programmation Statistique
+Examen de Programmation Statistique :
 
-Le code "Fonction et Graphique.Rmd" contient le code pour créer un fichier pdf grâce à R Markdown
+Le code "Fonction et Graphique.Rmd" contient le code pour créer un fichier pdf grâce à R Markdown.
 
-le dossier "exam_data" contient les données nécessaires pour employer le code
+le dossier "exam_data" contient les données nécessaires pour employer le code.
+
+"Fonction-et-graphique.html" contient la conversioin html du R Markdown.
