@@ -1,0 +1,128 @@
+---
+title: "Code Fonction et Graphique"
+author: "Valentin Eveno"
+date: "2024-12-18"
+output: html_document
+---
+
+```{r setup}
+library(tidyverse)
+library(xlsx)
+
+setwd("D:/DONNEES HDD/Science des Données/R3.04 Programmation statistique 2/R3.04 Programmation statistique 2/TP7-8")
+```
+
+
+Fonction et execution de la Fonction :
+```{r}
+Assemblage <- function(alpha,omega)  { 
+  x<-"exam_data/ventes01-"
+  z<-".csv"
+  MOIS<-c("01","02","03","04","05","06","07","08","09","10","11","12")
+  c<-1
+  
+  Amois<-str_split_i(alpha,"-",1)
+  Aannee<-str_split_i(alpha,"-",2)
+  Amoisn<-as.numeric(Amois)
+  Aanneen<-as.numeric(Aannee)
+  Bmois<-str_split_i(omega,"-",1)
+  Bannee<-str_split_i(omega,"-",2)
+  Bmoisn<-as.numeric(Bmois)
+  Banneen<-as.numeric(Bannee)
+  
+  
+  if (Aanneen==Banneen & Amoisn==Bmoisn) {
+    t<-paste0(x,alpha,z)
+    assemble<-read.csv(t)
+    return(assemble)
+  }
+  
+  else {
+    annuaire<-c()
+    n<-Banneen-Aanneen
+    t<-Aanneen
+    w<-1
+    if (n==0){
+      for (i in Amoisn:Bmoisn) {
+        annuaire[w]<-paste0(MOIS[i],"-",Aannee)
+        w<-w+1
+        c<-2
+      }
+      
+    }
+    else{
+      for (i in Amoisn:12) {
+        annuaire[w]<-paste0(MOIS[i],"-",Aannee)
+        w<-w+1
+      }
+    }
+    t<-t+1
+    while (n>1){
+      for (i in 1:12) {
+        tt<-as.character(t)
+        annuaire[w]<-paste0(MOIS[i],"-",tt)
+        w<-w+1
+      }
+      n<-n-1
+      t<-t+1
+    }
+    if (c==1) {
+      for (i in 1:Bmoisn) {
+        annuaire[w]<-paste0(MOIS[i],"-",Bannee)
+        w<-w+1
+      }
+    }
+    
+    t<-paste0(x,alpha,z)
+    assemble<-read.csv(t)
+    for (i in 2:length(annuaire)){
+      t<-paste0(x,annuaire[i],z)
+      tt<-read.csv(t)
+      assemble<-bind_rows(assemble,tt)
+    }
+    
+    assemble<-mutate(assemble,X=1:nrow(assemble))
+    return(assemble)
+  }
+}
+
+R<-Assemblage("01-2020","12-2024")
+```
+
+Graphique :
+```{r}
+R %>%
+  ggplot(.,aes(x=X,y=nb_de_ventes)) +
+  geom_line(color="red")+
+  ggtitle("Evolution des ventes de XD JET 100 par jour,de 2020 à 2024", subtitle="Avec des dates remarquables d'augmentation et diminution des ventes")+
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(plot.subtitle = element_text(hjust = 0.5))+
+  geom_vline(xintercept=0, color="grey")+
+  geom_vline(xintercept=367, color="grey")+
+  geom_vline(xintercept=732, color="grey")+
+  geom_vline(xintercept=1097, color="grey")+
+  geom_vline(xintercept=1462, color="grey")+
+  labs(x="jours depuis le 1er janvier 2020", y="nombre de ventes")+
+  annotate("text", x=0, y=40, label="2020")+
+  annotate("text", x=367, y=40, label="2021")+
+  annotate("text", x=732, y=40, label="2022")+
+  annotate("text", x=1097, y=40, label="2023")+
+  annotate("text", x=1462, y=40, label="2024") +
+  geom_hline(yintercept=mean(R$nb_de_ventes)) +
+  annotate("text", x=1500, y=89, label="moyenne ventes")+
+  annotate(geom="point", x=1177, y=48, size=5, shape=21, fill="transparent")+
+  annotate("text", x=1176, y=45, label="21/03/2023") +
+  annotate(geom="point", x=1220, y=100, size=5, shape=21, fill="transparent")+
+  annotate("text", x=1220, y=105, label="04/05/2023") +
+  annotate(geom="point", x=220, y=110, size=5, shape=21, fill="transparent")+
+  annotate("text", x=220, y=113, label="04/08/2020") +
+  annotate(geom="point", x=280, y=80, size=5, shape=21, fill="transparent")+
+  annotate("text", x=260, y=77, label="02/10/2020") +
+  annotate(geom="point", x=280, y=80, size=5, shape=21, fill="transparent")+
+  annotate("text", x=260, y=77, label="02/10/2020")+
+  annotate(geom="point", x=610, y=101, size=5, shape=21, fill="transparent")+
+  annotate("text", x=600, y=105, label="01/09/2021")+ 
+  geom_hline(yintercept=102, color="orange")+
+  annotate("text", x=900, y=99, label="moyenne ventes 2024", color="darkorange")
+  
+```
