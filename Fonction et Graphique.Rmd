@@ -5,17 +5,27 @@ date: "2024-12-18"
 output: html_document
 ---
 
-```{r setup}
+Les packages nécessaires :
+```{r}
 library(tidyverse)
 library(xlsx)
-
-setwd("D:/DONNEES HDD/Science des Données/R3.04 Programmation statistique 2/R3.04 Programmation statistique 2/TP7-8")
 ```
+Pensez à changer la racine du document.
+```{r, echo=FALSE}
+setwd("")
+```
+
 
 
 Fonction et execution de la Fonction :
 ```{r}
+#Pour que celle-ci fonctionne il faudra avoir sélectionner un dossier avec setwd, puis dans celui-ci créer un dossier "exam_data". Tous les fichiers CSV devront débuter par "ventes01-" avec ensuite le mois et l'année en format "MM-AAAA".
+#Il est possible de modifier le dossier de dépôt des CSV en modifiant la valeur de x dans la fonction
+
 Assemblage <- function(alpha,omega)  { 
+  #alpha est le mois de début de lecture, omega le mois de fin de lecture
+  #alpha est une suite de caractère dans le format mois et annee "MM-AAAA", de même pour omega. 
+
   x<-"exam_data/ventes01-"
   z<-".csv"
   MOIS<-c("01","02","03","04","05","06","07","08","09","10","11","12")
